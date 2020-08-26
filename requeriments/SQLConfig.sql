@@ -1,5 +1,20 @@
 USE HLocadora;
 
+DROP TABLE alugueis; 
+
+CREATE TABLE alugueis (
+    id_aluguel INT (11) NOT NULL AUTO_INCREMENT COMMENT 'ID Titulo',
+	nome_filme VARCHAR (255) NOT NULL COMMENT 'Nome do filme',
+    cpf_usuario VARCHAR (255) NOT NULL COMMENT 'CPF usuario',
+    data_recebimento  VARCHAR (255) NOT NULL COMMENT 'Data de Recebimento',
+    data_entrega  VARCHAR (255) NOT NULL COMMENT 'Data Entrega',
+	status_entrega  VARCHAR (255) NOT NULL COMMENT 'Status da entrega',
+    PRIMARY KEY (id_aluguel)
+  ) CHARSET = utf8; 
+  
+  insert into alugueis (nome_filme,cpf_usuario,data_recebimento,data_entrega,status_entrega) values ("Noiva Cadaver","123","06-03-2020","07-03-2020","aberto");
+  
+/*
 DROP TABLE filmes;
 
 CREATE TABLE filmes (
@@ -15,7 +30,7 @@ INSERT INTO filmes (nome,sinopse,estoque) values ("O turista","Conta a historia 
 INSERT INTO filmes (nome,sinopse,estoque) values ("O segredo dos animais","Conta o segredo dos animais",10);
     
     
-    /*
+    
 CREATE TABLE clientes (
     id_cliente INT (11) NOT NULL AUTO_INCREMENT COMMENT 'ID Titulo',
 	nome VARCHAR (255) NOT NULL COMMENT 'Nome',
