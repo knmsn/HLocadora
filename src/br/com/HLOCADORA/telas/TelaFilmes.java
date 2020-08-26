@@ -15,37 +15,37 @@ import java.io.IOException;
 
 
 
-public class TelaPrincipal extends javax.swing.JFrame {
+public class TelaFilmes extends javax.swing.JFrame {
 
     Connection conexao = null;
     PreparedStatement pst = null;
     ResultSet rs = null;
     
-    public void criarCliente() {
-         if(txtNome.getText().equals("") ||  txtIdade.getText().equals("") ||  txtEndereco.getText().equals("") ||  txtCPF.getText().equals("")){
+    public void criarFilme() {
+         if(txtNome.getText().equals("") ||  txtSinopse.getText().equals("") ||  txtEstoque.getText().equals("")){
               JOptionPane.showMessageDialog(null, "Preencha todos os campos para criar o registro.");
           }
          else{
         // Verificando se ja ha algum dado cadastrado com 
-        String sql = "SELECT * FROM clientes WHERE cpf=?";
+        String sql = "SELECT * FROM filmes WHERE nome=?";
         
         try {
            
             pst = conexao.prepareStatement(sql);
 
             
-            pst.setString(1, txtCPF.getText());
+            pst.setString(1, txtNome.getText());
 
             rs = pst.executeQuery();
             
            
             if (rs.next()) {
                 // Caso ja tenha registro
-            JOptionPane.showMessageDialog(null, "Ja existe usuario com este cpf");
+            JOptionPane.showMessageDialog(null, "Ja existe filme com este nome");
             
             } else {
                 // Caso nao tenha registro
-        String sql2 = "insert into clientes (nome,idade,endereco,cpf) values (?,?,?,?);";
+        String sql2 = "insert into filmes (nome,sinopse,estoque) values (?,?,?);";
         
         try {
             
@@ -56,16 +56,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
             // Pegando texto de dentro das labels 
             pst.setString(1, txtNome.getText());
-            pst.setString(2, txtIdade.getText());
-            pst.setString(3, txtEndereco.getText());   
-            pst.setString(4, txtCPF.getText());
+            pst.setString(2, txtSinopse.getText());
+            pst.setString(3, txtEstoque.getText());   
             pst.executeUpdate();
-            listarClientes();
+           listarFilmes();
             // Limpando os campos para verificar se o usuario colocou ou nao todos os campos
             txtNome.setText("");
-            txtIdade.setText("");
-            txtEndereco.setText("");
-            txtCPF.setText("");
+            txtSinopse.setText("");
+            txtEstoque.setText("");
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
@@ -78,14 +76,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
          } 
          }
 
-    public void listarClientes() {
+    public void listarFilmes() {
         
         DefaultTableModel hsaktableInicio = (DefaultTableModel) jTInicio.getModel();
 
         hsaktableInicio.setRowCount(0);
 
         // Criando SQL para listar todas as aplicacoes WEB
-        String sql = "SELECT * FROM clientes;";
+        String sql = "SELECT * FROM filmes;";
 
         try {
             // Armazenando a resposta dentro da variavel pst    
@@ -99,7 +97,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 //int seg = data.get(Calendar.SECOND);
 
                 // Fazendo WebScrapping
-            hsaktableInicio.addRow(new Object[]{rs.getString("id_cliente"),rs.getString("nome"), rs.getString("cpf"),rs.getString("idade"),rs.getString("endereco")});
+            hsaktableInicio.addRow(new Object[]{rs.getString("id_filme"),rs.getString("nome"), rs.getString("sinopse"),rs.getString("estoque")});
                 
 
             }
@@ -115,7 +113,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
      */
     
     
-    public TelaPrincipal() {
+    public TelaFilmes() {
         
         // Estabelecendo conexao com o banco de dados
         conexao = ModuloConexao.conector();
@@ -127,7 +125,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
    jButton3.setVisible(false);
    jButton5.setVisible(false);
         // Iniciando funcao para popular tabela inicial.
-       listarClientes();
+        listarFilmes();
 
     }
 
@@ -142,7 +140,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTInicio = new javax.swing.JTable();
-        txtcpfSearch = new javax.swing.JTextField();
+        txtnomeSearch = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
@@ -151,34 +149,30 @@ public class TelaPrincipal extends javax.swing.JFrame {
         txtNome = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        txtIdade = new javax.swing.JTextField();
-        txtEndereco = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        txtCPF = new javax.swing.JTextField();
+        txtSinopse = new javax.swing.JTextField();
+        txtEstoque = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu4 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("[HLocadora] Gerenciamento de Clientes");
+        setTitle("[HSK] Inicio");
 
         jTInicio.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Nome", "CPF", "Idade", "Endereco"
+                "ID", "Nome", "Sinopse", "Estoque"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -192,7 +186,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTInicio);
 
-        jLabel2.setText("CPF");
+        jLabel2.setText("Nome");
 
         jButton4.setText("Buscar");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -201,31 +195,29 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Crie seus clientes aqui");
+        jLabel1.setText("Registre novos filmes aqui");
 
         jLabel3.setText("Nome");
 
-        jLabel5.setText("Endereco");
+        jLabel5.setText("Estoque");
 
-        jLabel6.setText("Idade");
+        jLabel6.setText("Sinopse");
 
-        jLabel7.setText("CPF");
-
-        jButton1.setText("Criar Cliente");
+        jButton1.setText("Registrar filme");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Apagar Cliente");
+        jButton2.setText("Apagar filme");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Editar Cliente");
+        jButton3.setText("Editar filme");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -250,26 +242,22 @@ public class TelaPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel3)
-                            .addComponent(txtNome)
-                            .addComponent(jLabel6)
-                            .addComponent(txtIdade)
-                            .addComponent(txtEndereco)
-                            .addComponent(txtCPF, javax.swing.GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel5)
+                        .addComponent(jLabel3)
+                        .addComponent(jLabel6)
+                        .addComponent(txtNome, javax.swing.GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE)
+                        .addComponent(txtSinopse)
+                        .addComponent(txtEstoque))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton2)
-                        .addGap(10, 10, 10)
+                        .addGap(18, 18, 18)
                         .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton5)))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -282,36 +270,26 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtIdade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtSinopse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 127, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
                     .addComponent(jButton3)
-                    .addComponent(jButton5)))
+                    .addComponent(jButton5))
+                .addContainerGap(167, Short.MAX_VALUE))
         );
 
         jMenu4.setText("Titulos");
-
-        jMenuItem1.setText("Genciar Titulos");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        jMenu4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                jMenu4ActionPerformed(evt);
             }
         });
-        jMenu4.add(jMenuItem1);
-
-        jMenuItem2.setText("Vendas");
-        jMenu4.add(jMenuItem2);
-
         jMenuBar1.add(jMenu4);
 
         jMenu1.setText("Sobre");
@@ -344,10 +322,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(txtcpfSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtnomeSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton4)))
-                .addGap(18, 18, 18)
+                .addGap(26, 26, 26)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(146, 146, 146))
         );
@@ -357,14 +335,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtcpfSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtnomeSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(23, 85, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         setBounds(0, 0, 1293, 561);
@@ -380,7 +359,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        criarCliente();       
+        criarFilme();       
     }//GEN-LAST:event_jButton1ActionPerformed
 
     
@@ -393,7 +372,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
    
    String value = hsaktableInicio.getValueAt(jTInicio.getSelectedRow(), 0).toString();
     
-         String sql2 = "DELETE FROM clientes WHERE id_cliente=? ;";
+         String sql2 = "DELETE FROM filmes WHERE id_filme=? ;";
         
         try {
             
@@ -406,11 +385,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
             pst.setString(1, value);
             pst.executeUpdate();
                txtNome.setText("");
-            txtIdade.setText("");
-            txtEndereco.setText("");
-            txtCPF.setText("");
+            txtSinopse.setText("");
+            txtEstoque.setText("");
                         
-            listarClientes();
+            listarFilmes();
 
 
         } catch (Exception e) {
@@ -435,13 +413,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
    DefaultTableModel hsaktableInicio = (DefaultTableModel) jTInicio.getModel(); 
    
    String nome = hsaktableInicio.getValueAt(jTInicio.getSelectedRow(), 1).toString();
-   String idade = hsaktableInicio.getValueAt(jTInicio.getSelectedRow(), 3).toString();
-   String endereco = hsaktableInicio.getValueAt(jTInicio.getSelectedRow(), 4).toString();
-   String cpf = hsaktableInicio.getValueAt(jTInicio.getSelectedRow(), 2).toString();
+   String sinopse = hsaktableInicio.getValueAt(jTInicio.getSelectedRow(), 2).toString();
+   String estoque = hsaktableInicio.getValueAt(jTInicio.getSelectedRow(), 3).toString();
     txtNome.setText(nome);
-            txtIdade.setText(idade);
-            txtEndereco.setText(endereco);
-            txtCPF.setText(cpf);
+            txtSinopse.setText(sinopse);
+            txtEstoque.setText(estoque);
    
     }//GEN-LAST:event_jTInicioMousePressed
 
@@ -451,9 +427,8 @@ jButton1.setVisible(true);
    jButton3.setVisible(false);
    jButton5.setVisible(false);
    txtNome.setText("");
-            txtIdade.setText("");
-            txtEndereco.setText("");
-            txtCPF.setText("");
+            txtSinopse.setText("");
+            txtEstoque.setText("");
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -461,7 +436,7 @@ jButton1.setVisible(true);
    
    String value = hsaktableInicio.getValueAt(jTInicio.getSelectedRow(), 0).toString();
     
-         String sql3 = "UPDATE clientes SET nome=?,idade=?,endereco=?,cpf=? WHERE id_cliente=? ;";
+         String sql3 = "UPDATE filmes SET nome=?,sinopse=?,estoque=? WHERE id_filme=? ;";
         
         try {
             
@@ -472,17 +447,16 @@ jButton1.setVisible(true);
 
             // Pegando texto de dentro das labels \
             pst.setString(1, txtNome.getText());
-             pst.setString(2, txtIdade.getText());
-            pst.setString(3, txtEndereco.getText());
-             pst.setString(4, txtCPF.getText());
-            pst.setString(5, value);
+             pst.setString(2, txtSinopse.getText());
+            pst.setString(3, txtEstoque.getText());
+            pst.setString(4, value);
             pst.executeUpdate();
             
             // Resetando os labels
             txtNome.setText("");
-            txtIdade.setText("");
-            txtEndereco.setText("");
-            txtCPF.setText("");
+            txtSinopse.setText("");
+            txtEstoque.setText("");
+
             
             
             jButton1.setVisible(true);
@@ -491,7 +465,7 @@ jButton1.setVisible(true);
    jButton5.setVisible(false);
    
    
-            listarClientes();
+            listarFilmes();
 
 
         } catch (Exception e) {
@@ -505,8 +479,8 @@ jButton1.setVisible(true);
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
 
 
-if(txtcpfSearch.getText().equals("")){
-              JOptionPane.showMessageDialog(null, "Preencha o CPF  a ser pesquisado.");
+if(txtnomeSearch.getText().equals("")){
+              JOptionPane.showMessageDialog(null, "Preencha o nome  a ser pesquisado.");
           }
 else{
 
@@ -515,26 +489,26 @@ DefaultTableModel hsaktableInicio = (DefaultTableModel) jTInicio.getModel();
         hsaktableInicio.setRowCount(0);
 
         // Criando SQL para listar todas as aplicacoes WEB
-        String sql = "SELECT * FROM clientes where cpf=?;";
+        String sql = "SELECT * FROM filmes where nome=?;";
 
         try {
             
             pst = conexao.prepareStatement(sql);
-            pst.setString(1, txtcpfSearch.getText());
+            pst.setString(1, txtnomeSearch.getText());
             rs = pst.executeQuery();
             
             int rowCount = 0;
             while (rs.next()) {
                 rowCount = rowCount + 1;
                 
-            hsaktableInicio.addRow(new Object[]{rs.getString("id_cliente"),rs.getString("nome"), rs.getString("cpf"),rs.getString("idade"),rs.getString("endereco")});
+            hsaktableInicio.addRow(new Object[]{rs.getString("id_filme"),rs.getString("nome"), rs.getString("sinopse"),rs.getString("estoque")});
                 
 
             }
             
             if (rowCount <= 0){
                 JOptionPane.showMessageDialog(null, "Nada foi encontrado");
-                listarClientes();
+                listarFilmes();
             }
 
         } catch (Exception e) {
@@ -544,11 +518,10 @@ DefaultTableModel hsaktableInicio = (DefaultTableModel) jTInicio.getModel();
 }
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-    TelaFilmes telafilmes = new TelaFilmes();
+    private void jMenu4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu4ActionPerformed
+      TelaFilmes telafilmes = new TelaFilmes();
        telafilmes.setVisible(true);
-       this.dispose();
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_jMenu4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -567,20 +540,21 @@ DefaultTableModel hsaktableInicio = (DefaultTableModel) jTInicio.getModel();
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaFilmes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaFilmes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaFilmes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaFilmes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaPrincipal().setVisible(true);
+                new TelaFilmes().setVisible(true);
             }
         });
     }
@@ -596,20 +570,16 @@ DefaultTableModel hsaktableInicio = (DefaultTableModel) jTInicio.getModel();
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTInicio;
-    private javax.swing.JTextField txtCPF;
-    private javax.swing.JTextField txtEndereco;
-    private javax.swing.JTextField txtIdade;
+    private javax.swing.JTextField txtEstoque;
     private javax.swing.JTextField txtNome;
-    private javax.swing.JTextField txtcpfSearch;
+    private javax.swing.JTextField txtSinopse;
+    private javax.swing.JTextField txtnomeSearch;
     // End of variables declaration//GEN-END:variables
 }

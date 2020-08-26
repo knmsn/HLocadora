@@ -1,6 +1,21 @@
 USE HLocadora;
 
-DROP TABLE clientes;
+DROP TABLE filmes;
+
+CREATE TABLE filmes (
+    id_filme INT (11) NOT NULL AUTO_INCREMENT COMMENT 'ID Titulo',
+	nome VARCHAR (255) NOT NULL COMMENT 'Nome',
+    sinopse VARCHAR (255) NOT NULL COMMENT 'Sinopse',
+    estoque INT(10) NOT NULL COMMENT 'Estoque',
+    PRIMARY KEY (id_filme)
+  ) CHARSET = utf8; 
+  
+INSERT INTO filmes (nome,sinopse,estoque) values ("Noiva cadaver","Conta de uma noiva cadaver",10);
+INSERT INTO filmes (nome,sinopse,estoque) values ("O turista","Conta a historia de um turista",10);
+INSERT INTO filmes (nome,sinopse,estoque) values ("O segredo dos animais","Conta o segredo dos animais",10);
+    
+    
+    /*
 CREATE TABLE clientes (
     id_cliente INT (11) NOT NULL AUTO_INCREMENT COMMENT 'ID Titulo',
 	nome VARCHAR (255) NOT NULL COMMENT 'Nome',
@@ -11,7 +26,7 @@ CREATE TABLE clientes (
   ) CHARSET = utf8; 
 insert into clientes (nome,idade,endereco,cpf) values ("Gustavo","19","R. Jupia 184","14202872657");
 select * from clientes;
-/* DROP DATABASE HLocadora;
+ DROP DATABASE HLocadora;
 CREATE DATABASE HLocadora;
 USE  HLocadora;
 
@@ -42,16 +57,7 @@ insert into clientes (nome,idade,endereco,cpf) values ("Gustavo","19","R. Jupia 
 TRUNCATE TABLE usuarios; 
 INSERT INTO usuarios (usuario,senha,nivel_permissao) values ("root","123","1");
 
- CREATE TABLE titulos (
-    id_titulo INT (11) NOT NULL AUTO_INCREMENT COMMENT 'ID Titulo',
-	nome VARCHAR (255) NOT NULL COMMENT 'Nome',
-    sinopse VARCHAR (255) NOT NULL COMMENT 'Sinopse',
-    estoque INT(10) NOT NULL COMMENT 'Estoque',
-    PRIMARY KEY (id_titulo )
-  ) CHARSET = utf8; 
-  INSERT INTO titulos (nome,sinopse,estoque) values ("Noiva cadaver","Conta de uma noiva cadaver",10);
-    INSERT INTO titulos (nome,sinopse,estoque) values ("O turista","Conta a historia de um turista",10);
-    INSERT INTO titulos (nome,sinopse,estoque) values ("O segredo dos animais","Conta o segredo dos animais",10);
+ 
   
     CREATE TABLE aluguel (
     id_aluguel INT (11) NOT NULL AUTO_INCREMENT COMMENT 'ID Titulo',
