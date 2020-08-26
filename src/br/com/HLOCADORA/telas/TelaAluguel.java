@@ -138,7 +138,6 @@ public class TelaAluguel extends javax.swing.JFrame {
         layoutCriar();
         // Iniciando funcao para popular tabela inicial.
         listarAlugueis();
-
     }
 
     /**
@@ -530,7 +529,7 @@ layoutCriar();
    
    String value = hsaktableInicio.getValueAt(jTInicio.getSelectedRow(), 0).toString();
     
-         String sql3 = "UPDATE filmes SET nome=?,sinopse=?,estoque=? WHERE id_filme=? ;";
+         String sql3 = "UPDATE alugueis SET nome_filme=?,cpf_usuario=?,data_devolucao=?,data_entrega=?,status_entrega=? WHERE id_aluguel=? ;";
         
         try {
             
@@ -543,7 +542,25 @@ layoutCriar();
             pst.setString(1, txtNome.getText());
              pst.setString(2, txtCPF.getText());
             pst.setString(3, txtDevolucao.getText());
-            pst.setString(4, value);
+            pst.setString(4, txtEntrega.getText());
+            
+            if (jComboBox1.getSelectedIndex() == 1){
+            String statusAluguel = "Entregue";
+            pst.setString(5, statusAluguel);
+        }
+            
+        if (jComboBox1.getSelectedIndex() == 2){
+            String statusAluguel = "Pendente";
+            pst.setString(5, statusAluguel);
+        }
+        
+        if (jComboBox1.getSelectedIndex() == 0){
+             JOptionPane.showMessageDialog(null, "Selecione um status");
+        }
+        
+         
+         
+            pst.setString(6, value);
             pst.executeUpdate();
             
             // Resetando os labels
