@@ -339,6 +339,11 @@ public class TelaAluguel extends javax.swing.JFrame {
         jLabel4.setText("Busca por status");
 
         jButton6.setText("Buscar");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jMenu4.setText("Titulos");
         jMenu4.addActionListener(new java.awt.event.ActionListener() {
@@ -643,6 +648,56 @@ DefaultTableModel hsaktableInicio = (DefaultTableModel) jTInicio.getModel();
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox2ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+     
+        
+        if (jComboBox2.getSelectedIndex() == 0){
+             JOptionPane.showMessageDialog(null, "Selecione alguma das opcoes");
+        }
+        else{
+            
+            DefaultTableModel hsaktableInicio = (DefaultTableModel) jTInicio.getModel();
+
+        hsaktableInicio.setRowCount(0);
+
+        // Criando SQL para listar todas as aplicacoes WEB
+        String sql = "SELECT * FROM alugueis where status_entrega=?;";
+
+        try {
+            
+            pst = conexao.prepareStatement(sql);
+             if (jComboBox2.getSelectedIndex() == 1){
+            String statusAluguel = "Entregue";
+            pst.setString(1, statusAluguel);
+        }
+            
+        if (jComboBox2.getSelectedIndex() == 2){
+            String statusAluguel = "Pendente";
+            pst.setString(1, statusAluguel);
+        }
+            rs = pst.executeQuery();
+            
+            int rowCount = 0;
+            while (rs.next()) {
+                rowCount = rowCount + 1;
+                
+            hsaktableInicio.addRow(new Object[]{rs.getString("id_aluguel"),rs.getString("nome_filme"), rs.getString("cpf_usuario"),rs.getString("data_devolucao"),rs.getString("data_entrega"),rs.getString("status_entrega")});
+                
+
+            }
+            
+            if (rowCount <= 0){
+                JOptionPane.showMessageDialog(null, "Nada foi encontrado");
+               listarAlugueis();
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
