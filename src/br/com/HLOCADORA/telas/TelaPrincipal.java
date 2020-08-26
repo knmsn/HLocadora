@@ -101,7 +101,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 //int seg = data.get(Calendar.SECOND);
 
                 // Fazendo WebScrapping
-            hsaktableInicio.addRow(new Object[]{rs.getString("nome")+" "+ rs.getString("sobrenome"), rs.getString("cpf"),rs.getString("idade"),rs.getString("endereco")});
+            hsaktableInicio.addRow(new Object[]{rs.getString("id_cliente"),rs.getString("nome")+" "+ rs.getString("sobrenome"), rs.getString("cpf"),rs.getString("idade"),rs.getString("endereco")});
                 
 
             }
@@ -154,6 +154,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         txtCPF = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
@@ -168,11 +169,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nome", "CPF", "Idade", "Endereco"
+                "ID", "Nome", "CPF", "Idade", "Endereco"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, true
+                true, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -260,6 +261,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addComponent(jButton1))
         );
 
+        jButton2.setText("Apagar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         jMenu3.setText("Clientes");
         jMenuBar1.add(jMenu3);
 
@@ -298,7 +306,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton4)))
+                        .addComponent(jButton4))
+                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(28, 28, 28)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -314,9 +323,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton4))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2))
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         setBounds(0, 0, 1293, 561);
@@ -334,6 +345,46 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         criarCliente();       
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    
+        
+ 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+   if(jTInicio.getSelectedRow() != -1){
+       
+   DefaultTableModel hsaktableInicio = (DefaultTableModel) jTInicio.getModel(); 
+   
+   String value = hsaktableInicio.getValueAt(jTInicio.getSelectedRow(), 0).toString();
+   int idDeletar = Integer.parseInt(value);  
+    
+         String sql2 = "DELETE FROM clientes WHERE id_cliente=? ;";
+        
+        try {
+            
+         
+            
+            // Armazenando a resposta dentro da variavel pst    
+            pst = conexao.prepareStatement(sql2);
+
+            // Pegando texto de dentro das labels 
+            pst.setString(1, value);
+            pst.executeUpdate();
+            listarTitulos();
+
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+   
+   
+   //  
+   //hsaktableInicio.removeRow(jTInicio.getSelectedRow());
+    
+   
+   }else{
+        JOptionPane.showMessageDialog(null, "Selecione alguma linha.");
+   }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -372,6 +423,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
