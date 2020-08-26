@@ -591,7 +591,7 @@ layoutCriar();
 
 
 if(txtnomeSearch.getText().equals("")){
-              JOptionPane.showMessageDialog(null, "Preencha o nome  a ser pesquisado.");
+              JOptionPane.showMessageDialog(null, "Preencha o CPF  a ser pesquisado.");
           }
 else{
 
@@ -600,7 +600,7 @@ DefaultTableModel hsaktableInicio = (DefaultTableModel) jTInicio.getModel();
         hsaktableInicio.setRowCount(0);
 
         // Criando SQL para listar todas as aplicacoes WEB
-        String sql = "SELECT * FROM filmes where nome=?;";
+        String sql = "SELECT * FROM alugueis where cpf_usuario=?;";
 
         try {
             
@@ -612,7 +612,7 @@ DefaultTableModel hsaktableInicio = (DefaultTableModel) jTInicio.getModel();
             while (rs.next()) {
                 rowCount = rowCount + 1;
                 
-            hsaktableInicio.addRow(new Object[]{rs.getString("id_filme"),rs.getString("nome"), rs.getString("sinopse"),rs.getString("estoque")});
+            hsaktableInicio.addRow(new Object[]{rs.getString("id_aluguel"),rs.getString("nome_filme"), rs.getString("cpf_usuario"),rs.getString("data_devolucao"),rs.getString("data_entrega"),rs.getString("status_entrega")});
                 
 
             }
