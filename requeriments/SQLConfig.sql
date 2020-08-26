@@ -6,13 +6,14 @@ CREATE TABLE alugueis (
     id_aluguel INT (11) NOT NULL AUTO_INCREMENT COMMENT 'ID Titulo',
 	nome_filme VARCHAR (255) NOT NULL COMMENT 'Nome do filme',
     cpf_usuario VARCHAR (255) NOT NULL COMMENT 'CPF usuario',
-    data_recebimento  VARCHAR (255) NOT NULL COMMENT 'Data de Recebimento',
+    data_devolucao  VARCHAR (255) NOT NULL COMMENT 'Data de Recebimento',
     data_entrega  VARCHAR (255) NOT NULL COMMENT 'Data Entrega',
-	status_entrega  VARCHAR (255) NOT NULL COMMENT 'Status da entrega',
+	status_entrega  VARCHAR (255) DEFAULT 'Pendente',
     PRIMARY KEY (id_aluguel)
   ) CHARSET = utf8; 
   
-  insert into alugueis (nome_filme,cpf_usuario,data_recebimento,data_entrega,status_entrega) values ("Noiva Cadaver","123","06-03-2020","07-03-2020","aberto");
+  insert into alugueis (nome_filme,cpf_usuario,data_devolucao,data_entrega) values ("Noiva Cadaver","123","03-03-2020","01-03-2020");
+  insert into alugueis (nome_filme,cpf_usuario,data_devolucao,data_entrega,status_entrega) values ("HxH", "321", "02-03-2020", "04-03-2020","Entregue");
   
 /*
 DROP TABLE filmes;
