@@ -22,7 +22,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     ResultSet rs = null;
     
     public void criarCliente() {
-         if(txtNome.getText().equals("") || txtSobrenome.getText().equals("") ||  txtIdade.getText().equals("") ||  txtEndereco.getText().equals("") ||  txtCPF.getText().equals("")){
+         if(txtNome.getText().equals("") ||  txtIdade.getText().equals("") ||  txtEndereco.getText().equals("") ||  txtCPF.getText().equals("")){
               JOptionPane.showMessageDialog(null, "Preencha todos os campos para criar o registro.");
           }
          else{
@@ -45,7 +45,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             
             } else {
                 // Caso nao tenha registro
-        String sql2 = "insert into clientes (nome,sobrenome,idade,endereco,cpf) values (?,?,?,?,?);";
+        String sql2 = "insert into clientes (nome,idade,endereco,cpf) values (?,?,?,?);";
         
         try {
             
@@ -56,15 +56,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
             // Pegando texto de dentro das labels 
             pst.setString(1, txtNome.getText());
-            pst.setString(2, txtSobrenome.getText());
-            pst.setString(3, txtIdade.getText());
-            pst.setString(4, txtEndereco.getText());   
-            pst.setString(5, txtCPF.getText());
+            pst.setString(2, txtIdade.getText());
+            pst.setString(3, txtEndereco.getText());   
+            pst.setString(4, txtCPF.getText());
             pst.executeUpdate();
             listarTitulos();
             // Limpando os campos para verificar se o usuario colocou ou nao todos os campos
             txtNome.setText("");
-            txtSobrenome.setText("");
             txtIdade.setText("");
             txtEndereco.setText("");
             txtCPF.setText("");
@@ -101,7 +99,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 //int seg = data.get(Calendar.SECOND);
 
                 // Fazendo WebScrapping
-            hsaktableInicio.addRow(new Object[]{rs.getString("id_cliente"),rs.getString("nome")+" "+ rs.getString("sobrenome"), rs.getString("cpf"),rs.getString("idade"),rs.getString("endereco")});
+            hsaktableInicio.addRow(new Object[]{rs.getString("id_cliente"),rs.getString("nome"), rs.getString("cpf"),rs.getString("idade"),rs.getString("endereco")});
                 
 
             }
@@ -118,10 +116,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
     
     
     public TelaPrincipal() {
+        
         // Estabelecendo conexao com o banco de dados
         conexao = ModuloConexao.conector();
         // Iniciando a funcao padrao para criar os componentes na tela
         initComponents();
+        // Ocultando botao editar e apagar e deixando somente o criar
+        jButton1.setVisible(true);
+   jButton2.setVisible(false);
+   jButton3.setVisible(false);
+   jButton5.setVisible(false);
         // Iniciando funcao para popular tabela inicial.
         listarTitulos();
 
@@ -145,8 +149,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtNome = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        txtSobrenome = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         txtIdade = new javax.swing.JTextField();
@@ -155,6 +157,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         txtCPF = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
@@ -173,11 +177,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, true
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        jTInicio.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jTInicioMousePressed(evt);
             }
         });
         jScrollPane1.setViewportView(jTInicio);
@@ -189,8 +198,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jLabel1.setText("Crie seus clientes aqui");
 
         jLabel3.setText("Nome");
-
-        jLabel4.setText("Sobrenome");
 
         jLabel5.setText("Endereco");
 
@@ -205,33 +212,58 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setText("Apagar Cliente");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("Editar Cliente");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton5.setText("Cancelar");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(145, 145, 145))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(37, 37, 37)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel3)
-                    .addComponent(txtNome)
-                    .addComponent(txtSobrenome)
-                    .addComponent(jLabel6)
-                    .addComponent(txtIdade)
-                    .addComponent(txtEndereco)
-                    .addComponent(txtCPF, javax.swing.GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(179, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(145, 145, 145))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel3)
+                            .addComponent(txtNome)
+                            .addComponent(jLabel6)
+                            .addComponent(txtIdade)
+                            .addComponent(txtEndereco)
+                            .addComponent(txtCPF, javax.swing.GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton1)
-                        .addContainerGap())))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2)
+                        .addGap(10, 10, 10)
+                        .addComponent(jButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton5)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -241,32 +273,25 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel4)
-                .addGap(18, 18, 18)
-                .addComponent(txtSobrenome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtIdade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel7)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addComponent(jButton1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 127, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3)
+                    .addComponent(jButton5)))
         );
-
-        jButton2.setText("Apagar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
 
         jMenu3.setText("Clientes");
         jMenuBar1.add(jMenu3);
@@ -306,28 +331,25 @@ public class TelaPrincipal extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton4))
-                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(28, 28, 28)
+                        .addComponent(jButton4)))
+                .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(146, 146, 146))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton4))
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton2))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 85, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         setBounds(0, 0, 1293, 561);
@@ -355,7 +377,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
    DefaultTableModel hsaktableInicio = (DefaultTableModel) jTInicio.getModel(); 
    
    String value = hsaktableInicio.getValueAt(jTInicio.getSelectedRow(), 0).toString();
-   int idDeletar = Integer.parseInt(value);  
     
          String sql2 = "DELETE FROM clientes WHERE id_cliente=? ;";
         
@@ -369,6 +390,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
             // Pegando texto de dentro das labels 
             pst.setString(1, value);
             pst.executeUpdate();
+               txtNome.setText("");
+            txtIdade.setText("");
+            txtEndereco.setText("");
+            txtCPF.setText("");
+                        
             listarTitulos();
 
 
@@ -385,6 +411,81 @@ public class TelaPrincipal extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Selecione alguma linha.");
    }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTInicioMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTInicioMousePressed
+   jButton1.setVisible(false);
+   jButton2.setVisible(true);
+   jButton3.setVisible(true);
+   jButton5.setVisible(true);
+   DefaultTableModel hsaktableInicio = (DefaultTableModel) jTInicio.getModel(); 
+   
+   String nome = hsaktableInicio.getValueAt(jTInicio.getSelectedRow(), 1).toString();
+   String idade = hsaktableInicio.getValueAt(jTInicio.getSelectedRow(), 3).toString();
+   String endereco = hsaktableInicio.getValueAt(jTInicio.getSelectedRow(), 4).toString();
+   String cpf = hsaktableInicio.getValueAt(jTInicio.getSelectedRow(), 2).toString();
+    txtNome.setText(nome);
+            txtIdade.setText(idade);
+            txtEndereco.setText(endereco);
+            txtCPF.setText(cpf);
+   
+    }//GEN-LAST:event_jTInicioMousePressed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+jButton1.setVisible(true);
+   jButton2.setVisible(false);
+   jButton3.setVisible(false);
+   jButton5.setVisible(false);
+   txtNome.setText("");
+            txtIdade.setText("");
+            txtEndereco.setText("");
+            txtCPF.setText("");
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+ DefaultTableModel hsaktableInicio = (DefaultTableModel) jTInicio.getModel(); 
+   
+   String value = hsaktableInicio.getValueAt(jTInicio.getSelectedRow(), 0).toString();
+    
+         String sql3 = "UPDATE clientes SET nome=?,idade=?,endereco=?,cpf=? WHERE id_cliente=? ;";
+        
+        try {
+            
+         
+            
+            // Armazenando a resposta dentro da variavel pst    
+            pst = conexao.prepareStatement(sql3);
+
+            // Pegando texto de dentro das labels \
+            pst.setString(1, txtNome.getText());
+             pst.setString(2, txtIdade.getText());
+            pst.setString(3, txtEndereco.getText());
+             pst.setString(4, txtCPF.getText());
+            pst.setString(5, value);
+            pst.executeUpdate();
+            
+            // Resetando os labels
+            txtNome.setText("");
+            txtIdade.setText("");
+            txtEndereco.setText("");
+            txtCPF.setText("");
+            
+            
+            jButton1.setVisible(true);
+               jButton2.setVisible(false);
+   jButton3.setVisible(false);
+   jButton5.setVisible(false);
+   
+   
+            listarTitulos();
+
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }  
+        
+        
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -424,11 +525,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -445,6 +547,5 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JTextField txtEndereco;
     private javax.swing.JTextField txtIdade;
     private javax.swing.JTextField txtNome;
-    private javax.swing.JTextField txtSobrenome;
     // End of variables declaration//GEN-END:variables
 }

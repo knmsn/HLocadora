@@ -1,5 +1,16 @@
-select * from clientes;
+USE HLocadora;
 
+DROP TABLE clientes;
+CREATE TABLE clientes (
+    id_cliente INT (11) NOT NULL AUTO_INCREMENT COMMENT 'ID Titulo',
+	nome VARCHAR (255) NOT NULL COMMENT 'Nome',
+    idade VARCHAR (255) NOT NULL COMMENT 'Idade',
+    endereco VARCHAR (255) NOT NULL COMMENT 'Endereco',
+    cpf VARCHAR (255) NOT NULL COMMENT 'Avaliacao',
+    PRIMARY KEY (id_cliente)
+  ) CHARSET = utf8; 
+insert into clientes (nome,idade,endereco,cpf) values ("Gustavo","19","R. Jupia 184","14202872657");
+select * from clientes;
 /* DROP DATABASE HLocadora;
 CREATE DATABASE HLocadora;
 USE  HLocadora;
@@ -7,13 +18,12 @@ USE  HLocadora;
 CREATE TABLE clientes (
     id_cliente INT (11) NOT NULL AUTO_INCREMENT COMMENT 'ID Titulo',
 	nome VARCHAR (255) NOT NULL COMMENT 'Nome',
-    sobrenome VARCHAR (255) NOT NULL COMMENT 'Sobrenome',
     idade VARCHAR (255) NOT NULL COMMENT 'Idade',
     endereco VARCHAR (255) NOT NULL COMMENT 'Endereco',
     cpf VARCHAR (255) NOT NULL COMMENT 'Avaliacao',
     PRIMARY KEY (id_cliente)
   ) CHARSET = utf8; 
-insert into clientes (nome,sobrenome,idade,endereco,cpf) values ("Gustavo","Oliveira","19","R. Jupia 184","14202872657");
+insert into clientes (nome,idade,endereco,cpf) values ("Gustavo","19","R. Jupia 184","14202872657");
 
 
 
