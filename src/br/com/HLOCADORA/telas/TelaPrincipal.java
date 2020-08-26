@@ -142,7 +142,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTInicio = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
+        txtcpfSearch = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
@@ -194,6 +194,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jLabel2.setText("CPF");
 
         jButton4.setText("Buscar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Crie seus clientes aqui");
 
@@ -329,7 +334,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtcpfSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton4)))
                 .addGap(18, 18, 18)
@@ -342,7 +347,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtcpfSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -487,6 +492,48 @@ jButton1.setVisible(true);
         
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+
+
+if(txtcpfSearch.getText().equals("")){
+              JOptionPane.showMessageDialog(null, "Preencha o CPF  a ser pesquisado.");
+          }
+else{
+
+DefaultTableModel hsaktableInicio = (DefaultTableModel) jTInicio.getModel();
+
+        hsaktableInicio.setRowCount(0);
+
+        // Criando SQL para listar todas as aplicacoes WEB
+        String sql = "SELECT * FROM clientes where cpf=?;";
+
+        try {
+            
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, txtcpfSearch.getText());
+            rs = pst.executeQuery();
+            
+            int rowCount = 0;
+            while (rs.next()) {
+                rowCount = rowCount + 1;
+                
+            hsaktableInicio.addRow(new Object[]{rs.getString("id_cliente"),rs.getString("nome"), rs.getString("cpf"),rs.getString("idade"),rs.getString("endereco")});
+                
+
+            }
+            
+            if (rowCount <= 0){
+                JOptionPane.showMessageDialog(null, "Nada foi encontrado");
+                listarTitulos();
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+
+}
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -542,10 +589,10 @@ jButton1.setVisible(true);
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTInicio;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField txtCPF;
     private javax.swing.JTextField txtEndereco;
     private javax.swing.JTextField txtIdade;
     private javax.swing.JTextField txtNome;
+    private javax.swing.JTextField txtcpfSearch;
     // End of variables declaration//GEN-END:variables
 }
