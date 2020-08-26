@@ -101,7 +101,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 //int seg = data.get(Calendar.SECOND);
 
                 // Fazendo WebScrapping
-            hsaktableInicio.addRow(new Object[]{rs.getString("nome")+" "+ rs.getString("sobrenome"), rs.getString("cpf"),rs.getString("idade")});
+            hsaktableInicio.addRow(new Object[]{rs.getString("nome")+" "+ rs.getString("sobrenome"), rs.getString("cpf"),rs.getString("idade"),rs.getString("endereco")});
                 
 
             }
@@ -168,11 +168,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nome", "CPF", "Idade"
+                "Nome", "CPF", "Idade", "Endereco"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
