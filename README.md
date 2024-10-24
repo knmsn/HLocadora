@@ -1,10 +1,10 @@
-# HISOKA LOCADORA [HLOCADORA]
+# HISOKA RENTAL
 
-Sistema de gerenciamento de locadora, JAVA - NETBEANS.
+Rental management system, JAVA - NETBEANS.
 
-## Versões
+## Versions
 
-**03/09/2020**
+**09/03/2020**
 
-- [x] Gerenciamento de clientes da locadora.
-- [x] Gerenciamento de estoque da locadora.
+- [x] Customer management for the rental service.
+- [x] Inventory management for the rental service.
